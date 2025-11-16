@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gombalan Bucin untuk Aca 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+        }
+
+        .gombalan-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+            margin-top: 60px;
+            margin-bottom: 20px;
+        }
+
+        .gombalan-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            max-width: 500px;
+            opacity: 0;
+            transform: scale(0.8) translateY(30px);
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .gombalan-card.active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        .gombalan-card.exit {
+            opacity: 0;
+            transform: scale(0.8) translateY(-30px);
+        }
+
+        .gombalan-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gombalan-card:hover::before {
+            opacity: 1;
+        }
+
+        .gombalan-card:hover {
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .gombalan-card.last {
+            background: linear-gradient(135deg, #ff6b6b 0%, #c92a2a 100%);
+        }
+
+        .gombalan-card.last.active {
+            animation: dramaticEntrance 1s ease forwards;
+        }
+
+        .gombalan-text {
+            color: white;
+            font-size: 1.3em;
+            line-height: 1.8;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn.prev-btn {
+            background: linear-gradient(135deg, #a8a8a8 0%, #7a7a7a 100%);
+        }
+
+        .counter {
+            color: #667eea;
+            font-size: 1.1em;
+            margin-top: 20px;
+            font-weight: 600;
+        }
+
+        @keyframes dramaticEntrance {
+            0% {
+                transform: scale(0.5) rotate(-15deg);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.15) rotate(5deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        .hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            animation: float 4s ease-in infinite;
+            opacity: 0;
+        }
+
+        @keyframes float {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-1000px) rotate(360deg);
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .start-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .start-screen.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .start-title {
+            color: white;
+            font-size: 3em;
+            margin-bottom: 30px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .start-btn {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 20px 60px;
+            font-size: 1.5em;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .start-btn:active {
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px 20px;
+            }
+            
+            h1 {
+                font-size: 2em;
+                top: 25px;
+            }
+            
+            .gombalan-text {
+                font-size: 1.1em;
+            }
+
+            .gombalan-card {
+                padding: 25px;
+            }
+
+            .btn {
+                padding: 12px 30px;
+                font-size: 1em;
+            }
+
+            .gombalan-wrapper {
+                margin-top: 50px;
+            }
+
+            .start-title {
+                font-size: 2em;
+                padding: 0 20px;
+                text-align: center;
+            }
+
+            .start-btn {
+                padding: 15px 40px;
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="start-screen" id="startScreen">
+        <div class="start-title">💕 Pesan Spesial untuk Aca 💕</div>
+        <button class="start-btn" onclick="startExperience()">Mulai 💖</button>
+    </div>
+
+    <!-- Hidden YouTube Player -->
+    <div id="player" style="display: none;"></div>
+
+    <div class="hearts" id="hearts"></div>
+    
+    <div class="container">
+        <h1>💕 Untuk Aca 💕</h1>
+        
+        <div class="gombalan-wrapper">
+            <div class="gombalan-card" id="currentCard" onclick="createHeart(event)">
+                <div class="gombalan-text" id="cardText">
+                    Sinyal ku 4G, hatiku 4U 📱💖
+                </div>
+            </div>
+        </div>
+
+        <div class="counter" id="counter">1 / 7</div>
+
+        <div class="controls">
+            <button class="btn prev-btn" id="prevBtn" onclick="prevCard()" disabled>
+                ← Sebelumnya
+            </button>
+            <button class="btn" id="nextBtn" onclick="nextCard()">
+                Lanjut 💕 →
+            </button>
+        </div>
+    </div>
+
+    <!-- Load YouTube IFrame API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+
+    <script>
+        let player;
+
+        // Load YouTube IFrame API
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player("player", {
+                height: "0",
+                width: "0",
+                videoId: "CgjknaWVChY",
+                playerVars: {
+                    autoplay: 0,
+                    controls: 0,
+                    showinfo: 0,
+                    modestbranding: 1,
+                    rel: 0,
+                    iv_load_policy: 3,
+                    start: 9, // Start at 9 seconds
+                    loop: 1,
+                    playlist: "CgjknaWVChY" // Required for loop to work
+                },
+                events: {
+                    onReady: onPlayerReady,
+                    onStateChange: onPlayerStateChange
+                },
+            });
+        }
+
+        // YouTube Player Ready
+        function onPlayerReady(event) {
+            console.log("YouTube Player is ready!");
+        }
+
+        // Handle player state changes (for looping)
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.ENDED) {
+                player.seekTo(9);
+                player.playVideo();
+            }
+        }
+
+        const gombalan = [
+            "Sinyal ku 4G, hatiku 4U 📱💖",
+            "Kemarin sih pengen minum kopi, eh malah Aca yang begadang di hati aku ☕💭",
+            "Allahumma lakasumtu... I can't stop thinking about you 🤲✨",
+            "Apa bedanya Aca ama bintang? 🌟<br>Kalau bintang cantiknya di malam hari, kalau Aca setiap hari 💫",
+            "Kenapa bahasa Indonesia 'hidup' itu 'live'? 🤔<br>Soalnya kalau kamu itu 'love' 💕",
+            "Kata ilmuwan, gravitasi itu bikin semua jatuh ke bumi 🌍<br>Tapi kenapa aku malah jatuhnya ke kamu? 🪐💘",
+            "I love your eyes 👀💖<br>But I love my eyes more...<br>Because I can see yours ✨😍"
+        ];
+
+        let currentIndex = 0;
+        const card = document.getElementById('currentCard');
+        const cardText = document.getElementById('cardText');
+        const nextBtn = document.getElementById('nextBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const counter = document.getElementById('counter');
+        const startScreen = document.getElementById('startScreen');
+
+        function startExperience() {
+            // Fade out start screen first
+            startScreen.classList.add('fade-out');
+            
+            setTimeout(() => {
+                startScreen.style.display = 'none';
+                // Show first card
+                card.classList.add('active');
+                
+                // Play music from YouTube after a short delay
+                setTimeout(() => {
+                    if (player && typeof player.seekTo === 'function') {
+                        player.seekTo(9);
+                        player.playVideo();
+                    }
+                }, 300);
+            }, 500);
+        }
+
+        function updateCard() {
+            // Exit animation
+            card.classList.add('exit');
+            
+            setTimeout(() => {
+                // Update content
+                cardText.innerHTML = gombalan[currentIndex];
+                
+                // Check if last card
+                if (currentIndex === gombalan.length - 1) {
+                    card.classList.add('last');
+                    card.onclick = function(e) { createManyHearts(e); };
+                } else {
+                    card.classList.remove('last');
+                    card.onclick = function(e) { createHeart(e); };
+                }
+                
+                // Remove exit and prepare for entrance
+                card.classList.remove('exit');
+                card.classList.remove('active');
+                
+                // Entrance animation
+                setTimeout(() => {
+                    card.classList.add('active');
+                }, 50);
+            }, 300);
+
+            // Update counter
+            counter.textContent = `${currentIndex + 1} / ${gombalan.length}`;
+
+            // Update button states
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.disabled = currentIndex === gombalan.length - 1;
+            
+            if (currentIndex === gombalan.length - 1) {
+                nextBtn.textContent = "Selesai 💖";
+            } else {
+                nextBtn.textContent = "Lanjut 💕 →";
+            }
+        }
+
+        function nextCard() {
+            if (currentIndex < gombalan.length - 1) {
+                currentIndex++;
+                updateCard();
+            }
+        }
+
+        function prevCard() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateCard();
+            }
+        }
+
+        function createHeart(event) {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = event.clientX + 'px';
+            heart.style.top = event.clientY + 'px';
+            
+            document.getElementById('hearts').appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 4000);
+        }
+
+        function createManyHearts(event) {
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart');
+                    heart.innerHTML = '💖';
+                    heart.style.left = (event.clientX + Math.random() * 150 - 75) + 'px';
+                    heart.style.top = (event.clientY + Math.random() * 150 - 75) + 'px';
+                    heart.style.fontSize = (Math.random() * 25 + 15) + 'px';
+                    
+                    document.getElementById('hearts').appendChild(heart);
+                    
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 4000);
+                }, i * 80);
+            }
+        }
+
+        // Auto create random hearts
+        setInterval(() => {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = Math.random() > 0.5 ? '💕' : '💖';
+            heart.style.left = Math.random() * window.innerWidth + 'px';
+            heart.style.top = window.innerHeight + 'px';
+            
+            document.getElementById('hearts').appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 4000);
+        }, 2000);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' && !nextBtn.disabled) {
+                nextCard();
+            } else if (e.key === 'ArrowLeft' && !prevBtn.disabled) {
+                prevCard();
+            }
+        });
+    </script>
+</body>
+</html>
